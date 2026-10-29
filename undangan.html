@@ -1,0 +1,563 @@
+<!doctype html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Undangan Pernikahan</title>
+
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      :root {
+        --pink: #f8dce5;
+        --pink-dark: #810303;
+        --rose: #710a29;
+        --gold: #c6a15b;
+        --white: #630505;
+      }
+
+      body {
+        font-family: Georgia, serif;
+        background: linear-gradient(135deg, #fcebf0, #f4c9d8, #fff4f7);
+        color: var(--rose);
+        min-height: 100vh;
+        overflow-x: hidden;
+      }
+
+      /* Animasi kelopak bunga */
+      #petals {
+        position: fixed;
+        inset: 0;
+        pointer-events: none;
+        overflow: hidden;
+        z-index: 10;
+      }
+
+      .petal {
+        position: absolute;
+        top: -30px;
+        width: 14px;
+        height: 20px;
+        background: linear-gradient(135deg, #fff, #e99bb2);
+        border-radius: 80% 10% 80% 10%;
+        opacity: 0.8;
+        animation: fall linear infinite;
+      }
+
+      @keyframes fall {
+        0% {
+          transform: translateY(-5vh) translateX(0) rotate(0deg);
+        }
+        100% {
+          transform: translateY(110vh) translateX(100px) rotate(600deg);
+        }
+      }
+
+      /* Halaman pembuka */
+      .cover {
+        position: fixed;
+        inset: 0;
+        z-index: 20;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 20px;
+        text-align: center;
+        background: linear-gradient(135deg, #5b021e, #8f031d);
+        transition:
+          opacity 1s,
+          visibility 1s;
+      }
+
+      .cover.hide {
+        opacity: 0;
+        visibility: hidden;
+      }
+
+      .cover-box {
+        width: 100%;
+        max-width: 430px;
+        padding: 45px 25px;
+        border: 2px solid var(--gold);
+        outline: 1px solid var(--gold);
+        outline-offset: 7px;
+        background: rgba(255, 250, 250, 0.8);
+        border-radius: 150px 150px 25px 25px;
+        box-shadow: 0 10px 40px #a84d6c30;
+        animation: appear 1.2s ease;
+      }
+
+      .cover h1 {
+        font-size: 35px;
+        font-weight: normal;
+        margin: 20px 0;
+        font-style: italic;
+      }
+
+      .cover p {
+        line-height: 1.8;
+        margin: 12px 0;
+      }
+
+      .cover .flower {
+        font-size: 45px;
+        animation: float 3s ease-in-out infinite;
+      }
+
+      @keyframes float {
+        0%,
+        100% {
+          transform: translateY(0);
+        }
+        50% {
+          transform: translateY(-10px);
+        }
+      }
+
+      @keyframes appear {
+        from {
+          opacity: 0;
+          transform: translateY(30px) scale(0.95);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0) scale(1);
+        }
+      }
+
+      /* Tombol */
+      .button {
+        display: inline-block;
+        border: none;
+        border-radius: 40px;
+        padding: 14px 27px;
+        margin-top: 20px;
+        color: white;
+        background: linear-gradient(120deg, #d78da4, #a9506c);
+        font-size: 15px;
+        cursor: pointer;
+        box-shadow: 0 6px 20px #a9506c40;
+        transition: 0.3s;
+      }
+
+      .button:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 10px 25px #a9506c60;
+      }
+
+      /* Kartu undangan */
+      .container {
+        width: min(850px, 92%);
+        margin: 40px auto;
+      }
+
+      .invitation {
+        position: relative;
+        overflow: hidden;
+        text-align: center;
+        padding: 55px 35px;
+        border: 2px solid var(--gold);
+        border-radius: 25px;
+        background: rgba(255, 250, 250, 0.91);
+        box-shadow: 0 15px 50px #a9506c25;
+        animation: appear 1.2s ease;
+      }
+
+      .invitation::before {
+        content: '❀';
+        position: absolute;
+        top: 5px;
+        left: 12px;
+        font-size: 65px;
+        color: #e4a9b9;
+        opacity: 0.55;
+      }
+
+      .invitation::after {
+        content: '❀';
+        position: absolute;
+        bottom: 5px;
+        right: 12px;
+        font-size: 65px;
+        color: #e4a9b9;
+        opacity: 0.55;
+      }
+
+      .small-title {
+        letter-spacing: 4px;
+        font-size: 12px;
+        text-transform: uppercase;
+      }
+
+      .bismillah {
+        font-size: 27px;
+        color: var(--gold);
+        margin: 25px 0;
+      }
+
+      .intro {
+        max-width: 600px;
+        margin: 20px auto;
+        line-height: 1.9;
+      }
+
+      .names {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 15px;
+        margin: 35px 0;
+      }
+
+      .name-box {
+        flex: 1;
+        min-width: 0;
+        padding: 20px 12px;
+        border: 1px solid var(--gold);
+        border-radius: 18px;
+        background: linear-gradient(135deg, #fff, #fce8ee);
+        box-shadow: inset 0 0 0 4px #c6a15b12;
+      }
+
+      .name-box label {
+        display: block;
+        font-size: 11px;
+        letter-spacing: 1px;
+        text-transform: uppercase;
+        margin-bottom: 12px;
+      }
+
+      .name-box input {
+        width: 100%;
+        border: none;
+        border-bottom: 1px dashed #d99aaf;
+        outline: none;
+        padding: 8px 2px;
+        text-align: center;
+        background: transparent;
+        color: var(--rose);
+        font-family: Georgia, serif;
+        font-size: clamp(15px, 2.5vw, 24px);
+        font-style: italic;
+      }
+
+      .name-box input:focus {
+        border-bottom: 2px solid var(--pink-dark);
+      }
+
+      .name-box input::placeholder {
+        color: #c68b9e;
+      }
+
+      .ampersand {
+        font-size: 40px;
+        color: var(--gold);
+        animation: heartbeat 2s infinite;
+      }
+
+      @keyframes heartbeat {
+        0%,
+        100% {
+          transform: scale(1);
+        }
+        50% {
+          transform: scale(1.15);
+        }
+      }
+
+      .divider {
+        color: var(--gold);
+        margin: 30px 0;
+        letter-spacing: 7px;
+      }
+
+      /* Detail acara */
+      .details {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 15px;
+        margin: 35px 0;
+      }
+
+      .detail {
+        padding: 20px 10px;
+        border-top: 1px solid var(--gold);
+        border-bottom: 1px solid var(--gold);
+        transition: 0.3s;
+      }
+
+      .detail:hover {
+        background: #fce8ee;
+        transform: translateY(-5px);
+      }
+
+      .detail .icon {
+        font-size: 30px;
+        margin-bottom: 12px;
+      }
+
+      .detail h3 {
+        font-size: 20px;
+        font-weight: normal;
+        margin-bottom: 12px;
+      }
+
+      .detail p {
+        font-size: 14px;
+        line-height: 1.7;
+      }
+
+      .closing {
+        font-size: 24px;
+        font-style: italic;
+        margin: 20px 0;
+      }
+
+      /* Ucapan yang muncul saat tombol ditekan */
+      .message {
+        max-height: 0;
+        overflow: hidden;
+        opacity: 0;
+        transition:
+          max-height 1s ease,
+          opacity 1s ease;
+        line-height: 1.9;
+      }
+
+      .message.show {
+        max-height: 250px;
+        opacity: 1;
+        margin-top: 20px;
+      }
+
+      .footer {
+        margin-top: 30px;
+        font-size: 12px;
+        opacity: 0.7;
+      }
+
+      /* Kilauan */
+      .sparkle {
+        display: inline-block;
+        color: var(--gold);
+        animation: sparkle 2s ease-in-out infinite;
+      }
+
+      @keyframes sparkle {
+        0%,
+        100% {
+          opacity: 0.3;
+          transform: scale(0.8);
+        }
+        50% {
+          opacity: 1;
+          transform: scale(1.3);
+        }
+      }
+
+      @media (max-width: 650px) {
+        .container {
+          margin: 20px auto;
+        }
+
+        .invitation {
+          padding: 45px 18px;
+        }
+
+        .names {
+          flex-direction: column;
+        }
+
+        .name-box {
+          width: 100%;
+        }
+
+        .ampersand {
+          line-height: 1;
+        }
+
+        .details {
+          grid-template-columns: 1fr;
+        }
+
+        .detail {
+          padding: 18px;
+        }
+
+        .cover h1 {
+          font-size: 29px;
+        }
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+        *,
+        *::before,
+        *::after {
+          animation-duration: 0.01ms !important;
+          animation-iteration-count: 1 !important;
+          scroll-behavior: auto !important;
+        }
+      }
+    </style>
+  </head>
+
+  <body>
+    <div id="petals"></div>
+
+    <!-- Halaman pembuka -->
+    <section class="cover" id="cover">
+      <div class="cover-box">
+        <div class="flower">🌸</div>
+        <p class="small-title">The Wedding Of</p>
+        <h1>
+          Undangan
+          <br />
+          Pernikahan
+        </h1>
+        <p>Kepada Bapak/Ibu/Saudara/i</p>
+        <p>Dengan penuh kebahagiaan, kami mengundang Anda untuk menghadiri hari istimewa kami.</p>
+        <button class="button" onclick="openInvitation()">♡ Buka Undangan ♡</button>
+      </div>
+    </section>
+
+    <!-- Isi undangan -->
+    <main class="container">
+      <section class="invitation">
+        <p class="small-title">Undangan Pernikahan</p>
+
+        <div class="bismillah">بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ</div>
+
+        <p class="intro">
+          Dengan memohon rahmat dan ridho Allah SWT, kami bermaksud menyelenggarakan pernikahan.
+          Merupakan suatu kehormatan dan kebahagiaan bagi kami apabila Bapak/Ibu/Saudara/i berkenan
+          hadir untuk memberikan doa restu.
+        </p>
+
+        <!-- Nama bisa diedit langsung di browser -->
+        <div class="names">
+          <div class="name-box">
+            <label>Nama calon mempelai pria</label>
+            <input
+              id="pria"
+              type="text"
+              value="Ramadan Disyahputra"
+              placeholder="Ketik nama pria"
+            />
+          </div>
+
+          <div class="ampersand">&</div>
+
+          <div class="name-box">
+            <label>Nama calon mempelai wanita</label>
+            <input id="wanita" type="text" value="Roma Tarigan" placeholder="Ketik nama wanita" />
+          </div>
+        </div>
+
+        <div class="divider">
+          <span class="sparkle">✦</span>
+          ❀
+          <span class="sparkle">✦</span>
+        </div>
+
+        <div class="details">
+          <div class="detail">
+            <div class="icon">♡</div>
+            <h3>Akad Nikah</h3>
+            <p>Minggu, 1 November 2026</p>
+            <p><strong>13.00 WIB</strong></p>
+          </div>
+
+          <div class="detail">
+            <div class="icon">💍</div>
+            <h3>Resepsi</h3>
+            <p>Minggu, 1 November 2026</p>
+            <p><strong>13.00 WIB – selesai</strong></p>
+          </div>
+
+          <div class="detail">
+            <div class="icon">⌖</div>
+            <h3>Lokasi</h3>
+            <p>Dusun Buah Apam</p>
+            <p>Desa Beruam</p>
+          </div>
+        </div>
+
+        <div class="divider">♡ ─── ✦ ─── ♡</div>
+
+        <p>Merupakan kebahagiaan bagi kami atas kehadiran dan doa restu Anda.</p>
+
+        <div class="closing" id="closingNames">Ramadan Disyahputra & Roma br Tarigan</div>
+
+        <button class="button" id="messageButton" onclick="toggleMessage()">♡ Buka Ucapan ♡</button>
+
+        <div class="message" id="message">
+          <p>
+            Semoga Allah SWT melimpahkan keberkahan, serta menjadikan pernikahan ini keluarga yang
+            sakinah, mawaddah, warahmah. Aamiin.
+          </p>
+        </div>
+
+        <div class="footer">
+          <span class="sparkle">✦</span>
+          Terima kasih atas doa dan kehadiran Anda.
+          <span class="sparkle">✦</span>
+        </div>
+      </section>
+    </main>
+
+    <script>
+      // Animasi kelopak bunga jatuh
+      const petalsContainer = document.getElementById('petals');
+
+      for (let i = 0; i < 25; i++) {
+        const petal = document.createElement('span');
+        petal.className = 'petal';
+        petal.style.left = Math.random() * 100 + '%';
+        petal.style.animationDuration = 7 + Math.random() * 10 + 's';
+        petal.style.animationDelay = -Math.random() * 15 + 's';
+        petal.style.opacity = 0.3 + Math.random() * 0.6;
+        petal.style.scale = 0.5 + Math.random();
+        petalsContainer.appendChild(petal);
+      }
+
+      // Efek membuka halaman undangan
+      function openInvitation() {
+        document.getElementById('cover').classList.add('hide');
+        window.scrollTo({
+          top: 0,
+          behavior: 'smooth',
+        });
+      }
+
+      // Nama penutup berubah sesuai nama yang diketik
+      function updateNames() {
+        const pria = document.getElementById('pria').value.trim() || 'Mempelai Pria';
+
+        const wanita = document.getElementById('wanita').value.trim() || 'Mempelai Wanita';
+
+        document.getElementById('closingNames').textContent = pria + ' & ' + wanita;
+      }
+
+      document.getElementById('pria').addEventListener('input', updateNames);
+      document.getElementById('wanita').addEventListener('input', updateNames);
+
+      // Tombol untuk menampilkan atau menyembunyikan ucapan
+      function toggleMessage() {
+        const message = document.getElementById('message');
+        const button = document.getElementById('messageButton');
+
+        message.classList.toggle('show');
+
+        if (message.classList.contains('show')) {
+          button.textContent = '♡ Tutup Ucapan ♡';
+        } else {
+          button.textContent = '♡ Buka Ucapan ♡';
+        }
+      }
+    </script>
+  </body>
+</html>
